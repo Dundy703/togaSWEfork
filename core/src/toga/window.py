@@ -21,6 +21,7 @@ from toga.command import Command, CommandSet
 from toga.handlers import AsyncResult, wrapped_handler
 from toga.images import Image
 from toga.platform import get_platform_factory
+from toga.types import Position, PositionT, Size, SizeT
 
 if TYPE_CHECKING:
     from toga.app import App
@@ -121,8 +122,8 @@ class Window:
         self,
         id: str | None = None,
         title: str | None = None,
-        position: tuple[int, int] = (100, 100),
-        size: tuple[int, int] = (640, 480),
+        position: Position = Position(100, 100),
+        size: Size = Size(640, 480),
         resizable: bool = True,
         closable: bool = True,
         minimizable: bool = True,
@@ -314,54 +315,57 @@ class Window:
         return FilteredWidgetRegistry(self)
 
     @property
-    def size(self) -> tuple[int, int]:
-        """Size of the window, as a tuple of ``(width, height)``, in
+    def size(self) -> Size:
+        """Size of the window, as a namedtuple with properties ``(width, height)``, in
         :ref:`CSS pixels <css-units>`."""
         return self._impl.get_size()
 
     @size.setter
-    def size(self, size: tuple[int, int]) -> None:
+    def size(self, size: SizeT) -> None:
         self._impl.set_size(size)
         if self.content:
             self.content.refresh()
 
     @property
-    def position(self) -> tuple[int, int]:
-        """Absolute position of the window, as a ``(x, y)`` tuple coordinates, in
+    def position(self) -> SizeT:
+        """Absolute position of the window, as a ``(x, y)`` named tuple coordinates, in
         :ref:`CSS pixels <css-units>`.
 
         The origin is the top left corner of the primary screen.
         """
         absolute_origin = self._app.screens[0].origin
         absolute_window_position = self._impl.get_position()
-
-        window_position = (
+        pos = Position(
             absolute_window_position[0] - absolute_origin[0],
             absolute_window_position[1] - absolute_origin[1],
         )
-        return window_position
+        return pos
 
     @position.setter
-    def position(self, position: tuple[int, int]) -> None:
+    def position(self, position: PositionT) -> None:
+        if isinstance(position, tuple):
+            position = Position(*position)
         absolute_origin = self._app.screens[0].origin
-        absolute_new_position = (
+        absolute_new_position = Position(
             position[0] + absolute_origin[0],
             position[1] + absolute_origin[1],
         )
         self._impl.set_position(absolute_new_position)
 
     @property
-    def screen_position(self) -> tuple[int, int]:
-        """Position of the window with respect to current screen, as a ``(x, y)`` tuple."""
-        current_relative_position = (
+    def screen_position(self) -> Position:
+        """Position of the window with respect to current screen, as a named tuple."""
+        current_relative_position = Position(
             self.position[0] - self.screen.origin[0],
             self.position[1] - self.screen.origin[1],
         )
         return current_relative_position
 
     @screen_position.setter
-    def screen_position(self, position: tuple[int, int]) -> None:
-        new_relative_position = (
+    def screen_position(self, position: PositionT) -> None:
+        if isinstance(position, tuple):
+            position = Position(*position)
+        new_relative_position = Position(
             position[0] + self.screen.origin[0],
             position[1] + self.screen.origin[1],
         )

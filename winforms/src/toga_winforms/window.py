@@ -4,6 +4,7 @@ from System.Drawing.Imaging import ImageFormat
 from System.IO import MemoryStream
 
 from toga.command import Separator
+from toga.types import Position, PositionT, Size as Size_, SizeT
 
 from .container import Container
 from .libs.wrapper import WeakrefCallable
@@ -83,21 +84,21 @@ class Window(Container, Scalable):
 
     def get_position(self):
         location = self.native.Location
-        return tuple(map(self.scale_out, (location.X, location.Y)))
+        return Position(map(self.scale_out, (location.X, location.Y)))
 
-    def set_position(self, position):
-        self.native.Location = Point(*map(self.scale_in, position))
+    def set_position(self, position: PositionT):
+        self.native.Location = Point(*map(self.scale_in, *position))
 
     def get_size(self):
         size = self.native.Size
-        return (
+        return Size_(
             self.scale_out(size.Width - self.decor_width()),
             self.scale_out(size.Height - self.decor_height()),
         )
 
-    def set_size(self, size):
+    def set_size(self, size: SizeT):
         width, height = size
-        self.native.Size = Size(
+        self.native.Size = (
             self.scale_in(width) + self.decor_width(),
             self.scale_in(height) + self.decor_height(),
         )

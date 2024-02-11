@@ -10,6 +10,8 @@ from android.view import ViewTreeObserver
 from java import dynamic_proxy
 from java.io import ByteArrayOutputStream
 
+from toga.types import Position, Size
+
 from .container import Container
 from .screens import Screen as ScreenImpl
 
@@ -58,14 +60,14 @@ class Window(Container):
         self.app.native.setTitle(title)
 
     def get_position(self):
-        return 0, 0
+        return Position(0, 0)
 
     def set_position(self, position):
         # Does nothing on mobile
         pass
 
     def get_size(self):
-        return (self.width, self.height)
+        return Size(self.width, self.height)
 
     def set_size(self, size):
         # Does nothing on mobile

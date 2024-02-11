@@ -8,6 +8,9 @@ from .fonts import Font
 from .icons import Icon
 from .images import Image
 from .keys import Key
+
+# Types
+from .types import Position, PositionT, Size, SizeT
 from .widgets.activityindicator import ActivityIndicator
 
 # Widgets
@@ -89,6 +92,11 @@ __all__ = [
     # Deprecated widget names
     "DatePicker",
     "TimePicker",
+    # Tuples
+    "Size",
+    "SizeT",
+    "Position",
+    "PositionT",
 ]
 
 

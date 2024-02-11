@@ -1,3 +1,4 @@
+from toga import Position, PositionT, Size, SizeT
 from toga.command import Separator
 
 from .container import TogaContainer
@@ -146,16 +147,18 @@ class Window:
 
     def get_position(self):
         pos = self.native.get_position()
-        return pos.root_x, pos.root_y
+        return Position(pos.root_x, pos.root_y)
 
-    def set_position(self, position):
+    def set_position(self, position: PositionT):
+        if isinstance(position, tuple):
+            position = Position(*position)
         self.native.move(position[0], position[1])
 
     def get_size(self):
         size = self.native.get_size()
-        return size.width, size.height
+        return Size(size.width, size.height)
 
-    def set_size(self, size):
+    def set_size(self, size: SizeT):
         self.native.resize(size[0], size[1])
 
     def set_full_screen(self, is_full_screen):

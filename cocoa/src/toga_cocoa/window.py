@@ -1,6 +1,7 @@
 from rubicon.objc import CGSize
 
 from toga.command import Command, Separator
+from toga.types import Position, PositionT, Size, SizeT
 from toga_cocoa.container import Container
 from toga_cocoa.libs import (
     SEL,
@@ -262,7 +263,9 @@ class Window:
             - (window_frame.origin.y + window_frame.size.height),
         )
 
-    def set_position(self, position):
+    def set_position(self, position: PositionT):
+        if isinstance(position, tuple):
+            position = Position(*position)
         # The "primary" screen has index 0 and origin (0, 0).
         primary_screen = NSScreen.screens[0].frame
 
@@ -273,11 +276,13 @@ class Window:
 
         self.native.setFrameTopLeftPoint(NSPoint(x, y))
 
-    def get_size(self):
+    def get_size(self) -> Size:
         frame = self.native.frame
-        return frame.size.width, frame.size.height
+        return Size(frame.size.width, frame.size.height)
 
-    def set_size(self, size):
+    def set_size(self, size: SizeT):
+        if isinstance(size, tuple):
+            size = Position(*size)
         frame = self.native.frame
         frame.size = NSSize(size[0], size[1])
         self.native.setFrame(frame, display=True, animate=True)

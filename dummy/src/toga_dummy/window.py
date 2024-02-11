@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import toga_dummy
+from toga import Position, PositionT, Size, SizeT
 
 from .screens import Screen as ScreenImpl
 from .utils import LoggedObject
@@ -69,13 +70,17 @@ class Window(LoggedObject):
     def get_position(self):
         return self._get_value("position")
 
-    def set_position(self, position):
+    def set_position(self, position: PositionT):
+        if isinstance(position, tuple):
+            position = Position(*position)
         self._set_value("position", position)
 
-    def get_size(self):
-        return self._get_value("size", (640, 480))
+    def get_size(self) -> Size:
+        return self._get_value("size", Size(640, 480))
 
-    def set_size(self, size):
+    def set_size(self, size: SizeT):
+        if isinstance(size, tuple):
+            size = Position(*size)
         self._set_value("size", size)
 
     def set_app(self, app):
