@@ -136,9 +136,9 @@ class Window:
         :param id: A unique identifier for the window. If not provided, one will be
             automatically generated.
         :param title: Title for the window. Defaults to "Toga".
-        :param position: Position of the window, as a tuple of ``(x, y)`` coordinates,
+        :param position: Position of the window, as a named tuple with values x and y,
             in :ref:`CSS pixels <css-units>`.
-        :param size: Size of the window, as a tuple of ``(width, height)``, in :ref:`CSS
+        :param size: Size of the window, as a named tuple with values width and height, in :ref:`CSS
             pixels <css-units>`.
         :param resizable: Can the window be resized by the user?
         :param closable: Can the window be closed by the user?
@@ -322,12 +322,14 @@ class Window:
 
     @size.setter
     def size(self, size: SizeT) -> None:
+        if isinstance(size, tuple[int, int]):
+            size = Size(*size)
         self._impl.set_size(size)
         if self.content:
             self.content.refresh()
 
     @property
-    def position(self) -> SizeT:
+    def position(self) -> Position:
         """Absolute position of the window, as a ``(x, y)`` named tuple coordinates, in
         :ref:`CSS pixels <css-units>`.
 
@@ -343,7 +345,7 @@ class Window:
 
     @position.setter
     def position(self, position: PositionT) -> None:
-        if isinstance(position, tuple):
+        if isinstance(position, tuple[int, int]):
             position = Position(*position)
         absolute_origin = self._app.screens[0].origin
         absolute_new_position = Position(

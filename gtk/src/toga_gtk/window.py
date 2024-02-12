@@ -1,5 +1,5 @@
-from toga import Position, PositionT, Size, SizeT
 from toga.command import Separator
+from toga.types import Position, PositionT, Size, SizeT
 
 from .container import TogaContainer
 from .libs import Gdk, Gtk

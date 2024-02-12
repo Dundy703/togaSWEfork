@@ -201,7 +201,6 @@ else:
 
         assert second_window.app == app
         assert second_window in app.windows
-
         assert second_window.title == "Secondary Window"
         assert second_window.size == (300, 200)
         assert second_window.position == (200, 300)

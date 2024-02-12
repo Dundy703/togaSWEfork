@@ -89,14 +89,13 @@ __all__ = [
     "WebView",
     "Widget",
     "Window",
-    # Deprecated widget names
-    "DatePicker",
-    "TimePicker",
-    # Tuples
     "Size",
     "SizeT",
     "Position",
     "PositionT",
+    # Deprecated widget names
+    "DatePicker",
+    "TimePicker",
 ]
 
 

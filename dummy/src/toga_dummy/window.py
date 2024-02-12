@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import toga_dummy
-from toga import Position, PositionT, Size, SizeT
+from toga.types import Position, PositionT, Size, SizeT
 
 from .screens import Screen as ScreenImpl
 from .utils import LoggedObject
